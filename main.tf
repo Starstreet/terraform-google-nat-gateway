@@ -112,8 +112,13 @@ resource "google_compute_firewall" "nat-gateway" {
     protocol = "all"
   }
 
+<<<<<<< HEAD
   source_tags = ["${compact(concat(list("${var.name}nat-${var.region}", "${var.name}nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"), "${list(element(var.tags, count.index))}"}"]
   target_tags = ["${compact(concat(list("${var.name}nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"), "${list(element(var.tags, count.index))}"}"]
+=======
+  source_tags = ["${compact(concat(list("${var.name}nat-${var.region}", "${var.name}nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"), "${list(element(var.tags, count.index))}"))}"]
+  target_tags = ["${compact(concat(list("${var.name}nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"), "${list(element(var.tags, count.index))}"))}"]
+>>>>>>> terraform interpolation syntax is annoying
 }
 
 resource "google_compute_address" "default" {
