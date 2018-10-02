@@ -67,7 +67,7 @@ module "nat-gateway" {
   target_tags        = ["${var.name}nat-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"]
   machine_type       = "${var.machine_type}"
   name               = "${var.name}nat-gateway-${var.zone == "" ? lookup(var.region_params["${var.region}"], "zone") : var.zone}"
-  compute_image      = "debian-9"
+  compute_image      = "projects/debian-cloud/global/images/family/debian-9"
   size               = 1
   network_ip         = "${var.ip}"
   can_ip_forward     = "true"
