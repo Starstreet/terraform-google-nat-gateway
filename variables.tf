@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+variable module_enabled {
+  description = "To disable this module, set this to false"
+  default     = true
+}
+
 variable project {
   description = "The project to deploy to, if not set the default provider project is used."
   default     = ""
@@ -74,8 +79,13 @@ variable machine_type {
   default     = "n1-standard-1"
 }
 
+variable compute_image {
+  description = "Image used for NAT compute VMs."
+  default     = "projects/debian-cloud/global/images/family/debian-9"
+}
+
 variable ip {
-  description = "Override the IP used in the `region_params` map for the region."
+  description = "Override the internal IP. If not provided, an internal IP will automatically be assigned."
   default     = ""
 }
 
@@ -89,6 +99,39 @@ variable squid_config {
   default     = ""
 }
 
+variable metadata {
+  description = "Metadata to be attached to the NAT gateway instance"
+  type        = "map"
+  default     = {}
+}
+
+variable "ssh_fw_rule" {
+  description = "Whether or not the SSH Firewall Rule should be created"
+  default     = true
+}
+
+variable ssh_source_ranges {
+  description = "Network ranges to allow SSH from"
+  type        = "list"
+  default     = ["0.0.0.0/0"]
+}
+
+variable instance_labels {
+  description = "Labels added to instances."
+  type        = "map"
+  default     = {}
+}
+
+variable service_account_email {
+  description = "The email of the service account for the instance template."
+  default     = "default"
+}
+
+variable autohealing_enabled {
+  description = "Enable instance autohealing using http health check"
+  default     = false
+}
+
 variable region_params {
   description = "Map of default zones and IPs for each region. Can be overridden using the `zone` and `ip` variables."
   type        = "map"
@@ -96,6 +139,10 @@ variable region_params {
   default = {
     asia-east1 = {
       zone = "asia-east1-b"
+    }
+
+    asia-east2 = {
+      zone = "asia-east2-b"
     }
 
     asia-northeast1 = {
@@ -112,6 +159,10 @@ variable region_params {
 
     australia-southeast1 = {
       zone = "australia-southeast1-b"
+    }
+
+    europe-north1 = {
+      zone = "europe-north1-b"
     }
 
     europe-west1 = {
@@ -153,5 +204,14 @@ variable region_params {
     us-west1 = {
       zone = "us-west1-b"
     }
+
+    us-west2 = {
+      zone = "us-west2-b"
+    }
   }
+}
+
+variable "dest_range" {
+  description = "The destination IPv4 address range that this route applies to"
+  default     = "0.0.0.0/0"
 }
